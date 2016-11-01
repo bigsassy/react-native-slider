@@ -10,7 +10,8 @@ import {
   StyleSheet,
   PanResponder,
   View,
-  Easing
+  Easing,
+  Image
 } from "react-native";
 
 const shallowCompare = require('react-addons-shallow-compare'),
@@ -259,11 +260,24 @@ var Slider = React.createClass({
 
     var touchOverflowStyle = this._getTouchOverflowStyle();
 
+    var trackImage = null;
+    if (this.props.trackImage) {
+      trackImage = (
+        <Image
+          source={this.props.trackImage}
+          resizeMode="stretch"
+          style={mainStyles.trackImage}
+        />
+      );
+    }
+
     return (
       <View {...other} style={[mainStyles.container, style]} onLayout={this._measureContainer}>
         <View
           style={[{backgroundColor: maximumTrackTintColor,}, mainStyles.track, trackStyle]}
-          onLayout={this._measureTrack} />
+          onLayout={this._measureTrack}>
+          {trackImage}
+        </View>
         <Animated.View style={[mainStyles.track, trackStyle, minimumTrackStyle]} />
         <Animated.View
           onLayout={this._measureThumb}
@@ -508,6 +522,11 @@ var defaultStyles = StyleSheet.create({
   track: {
     height: TRACK_SIZE,
     borderRadius: TRACK_SIZE / 2,
+  },
+  trackImage: {
+    flex: 1,
+    width: null,
+    height: null,
   },
   thumb: {
     position: 'absolute',
